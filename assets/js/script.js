@@ -19,6 +19,7 @@ function renderTimeBlocks () {
     for (var i = startHour ; i <= endTime; i++) {
         // Create a new timeblock
         var newRow = sampleRow.clone();
+        newRow.removeClass("d-none");
         
         // Select the column with the hour
         var hourColumn = newRow.children('.hour');
