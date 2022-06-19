@@ -10,6 +10,9 @@ function renderTimeBlocks () {
     var sampleRow = $('#sample-row');
     var timeBlocks = $('#time-blocks');
 
+    // Set current hour without minutes
+    var currentTime = moment().minutes(0).seconds(0).millisecond(0);
+
     var startHour = 9;
     var endTime = 17;
 
@@ -19,9 +22,25 @@ function renderTimeBlocks () {
         
         // Select the column with the hour
         var hourColumn = newRow.children('.hour');
+
+        var timeBlockTime = moment().hour(i).minutes(0).seconds(0).millisecond(0);
+
+        // if currentTime == timeBlockTime then backgroundcolor = red (present)
+        if (currentTime.isSame(timeBlockTime)) {
+            newRow.addClass("present");
+        }
+        // if currentTime < timeBlockTime then backgroundcolor = green (future)
+        if (currentTime.isBefore(timeBlockTime)) {
+            console.log(currentTime, timeBlockTime)
+            newRow.addClass("future");
+        }
+        // if currentTime > timeBlockTime then backgroundcolor = grey (past)
+        if (currentTime.isAfter(timeBlockTime)) {
+            newRow.addClass("past");
+        }
         
         // Display time in AM/PM format
-        hourColumn.text(moment().hour(i).minutes(0).format('h a'));
+        hourColumn.text(timeBlockTime.format('h a'));
 
         // Add to the list of timeBlocks
         newRow.appendTo(timeBlocks);
