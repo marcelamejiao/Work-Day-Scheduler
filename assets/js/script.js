@@ -22,6 +22,9 @@ function renderTimeBlocks () {
         // Create a new timeblock
         var newRow = sampleRow.clone();
         newRow.removeClass("d-none");
+
+        // Set the hour for each time block line so that we can run the save button function
+        newRow.attr('data-hour', i);
         
         // Select the column with the hour
         var hourColumn = newRow.children('.hour');
@@ -44,6 +47,28 @@ function renderTimeBlocks () {
         
         // Display time in AM/PM format
         hourColumn.text(timeBlockTime.format('h a'));
+
+        // When save button is clicked then save textarea data to local storage
+        var saveButton = newRow.children('.saveBtn').children('i');
+        saveButton.on("click", function(event){
+            // Get the save button that the user clicked and convert it to a jQuery object
+            var button = $(event.target);
+            
+            // Get the text area section on the same row as the save button
+            var textArea = button.parent().siblings('textarea');
+
+            // Get what the user entered
+            var userTasks = textArea.val();
+            
+            // Read the hour attribute that is stored on the time block row
+            var hourIndex = textArea.parent().attr('data-hour');
+
+            // Add what the user entered to our state object
+            state[hourIndex] = userTasks;
+
+            // Save the state object to the local storage
+            saveState();
+        });
 
         // Add to the list of timeBlocks
         newRow.appendTo(timeBlocks);
