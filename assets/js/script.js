@@ -1,6 +1,9 @@
 var state = {};
 
 function init () {
+    // Load the state object from local storage
+    loadState();
+
     // current day and time
     var time = moment().format("LLLL");
     $("#currentDay").text(time);
@@ -48,6 +51,14 @@ function renderTimeBlocks () {
         // Display time in AM/PM format
         hourColumn.text(timeBlockTime.format('h a'));
 
+        var textArea = newRow.children('textarea');
+        
+        // Check if we have any data in this time block...
+        if (state.hasOwnProperty(i)) {
+            // ... if we do, render the text in the textarea
+            textArea.val(state[i]);
+        }
+
         // When save button is clicked then save textarea data to local storage
         var saveButton = newRow.children('.saveBtn').children('i');
         saveButton.on("click", function(event){
@@ -90,10 +101,3 @@ function saveState() {
 }
 
 init();
-
-// display the bussiness hours (time blocks)
-// display the current time (green for current, gray(?) for past)
-// option to add the tasks
-// save button
-// json to save the data in local storage
-// colours the tasks
