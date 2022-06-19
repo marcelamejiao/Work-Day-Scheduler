@@ -1,3 +1,5 @@
+var state = {};
+
 function init () {
     // current day and time
     var time = moment().format("LLLL");
@@ -46,6 +48,20 @@ function renderTimeBlocks () {
         // Add to the list of timeBlocks
         newRow.appendTo(timeBlocks);
     }
+}
+
+function loadState() {
+    var json = localStorage.getItem("work_day_scheduler");
+
+    if (json !== null) {
+        state = JSON.parse(json);
+    }
+}
+
+function saveState() {
+    var json = JSON.stringify(state);
+
+    localStorage.setItem("work_day_scheduler", json);
 }
 
 init();
